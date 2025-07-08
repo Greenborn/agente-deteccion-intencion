@@ -1,0 +1,274 @@
+{
+  "intents": [
+    {
+      "id": "BUSQUEDA",
+      "name": "Búsqueda de productos",
+      "description": "Intención para buscar productos o servicios",
+      "patterns": [
+        "buscar {nombre_producto}",
+        "encontrar {nombre_producto}",
+        "producto {nombre_producto}",
+        "necesito {nombre_producto}",
+        "quiero {nombre_producto}",
+        "busco {nombre_producto}",
+        "dónde encontrar {nombre_producto}",
+        "cómo conseguir {nombre_producto}",
+        "muéstrame {nombre_producto}",
+        "dame {nombre_producto}"
+      ],
+      "parameters": {
+        "nombre_producto": {
+          "type": "string",
+          "required": true,
+          "description": "Nombre del producto a buscar"
+        }
+      },
+      "confidence": 0.8,
+      "priority": 1
+    },
+    {
+      "id": "PRECIO",
+      "name": "Consulta de precios",
+      "description": "Intención para consultar precios de productos",
+      "patterns": [
+        "precio de {producto}",
+        "cuánto cuesta {producto}",
+        "valor de {producto}",
+        "costo de {producto}",
+        "qué precio tiene {producto}",
+        "precio {producto}",
+        "cuánto vale {producto}",
+        "tarifa de {producto}",
+        "precio para {producto}"
+      ],
+      "parameters": {
+        "producto": {
+          "type": "string",
+          "required": true,
+          "description": "Producto del cual consultar el precio"
+        }
+      },
+      "confidence": 0.85,
+      "priority": 2
+    },
+    {
+      "id": "COMPRA",
+      "name": "Compra de productos",
+      "description": "Intención para realizar una compra",
+      "patterns": [
+        "comprar {producto}",
+        "adquirir {producto}",
+        "ordenar {producto}",
+        "pedir {producto}",
+        "realizar compra de {producto}",
+        "hacer pedido de {producto}",
+        "quiero comprar {producto}",
+        "necesito comprar {producto}",
+        "deseo adquirir {producto}",
+        "me gustaría comprar {producto}"
+      ],
+      "parameters": {
+        "producto": {
+          "type": "string",
+          "required": true,
+          "description": "Producto a comprar"
+        },
+        "cantidad": {
+          "type": "number",
+          "required": false,
+          "description": "Cantidad del producto"
+        }
+      },
+      "confidence": 0.9,
+      "priority": 1
+    },
+    {
+      "id": "INFORMACION",
+      "name": "Información general",
+      "description": "Intención para solicitar información general",
+      "patterns": [
+        "información sobre {tema}",
+        "datos de {tema}",
+        "detalles de {tema}",
+        "qué es {tema}",
+        "explicar {tema}",
+        "hablar de {tema}",
+        "cuéntame sobre {tema}",
+        "dime sobre {tema}",
+        "necesito información de {tema}",
+        "quiero saber sobre {tema}"
+      ],
+      "parameters": {
+        "tema": {
+          "type": "string",
+          "required": true,
+          "description": "Tema sobre el cual solicitar información"
+        }
+      },
+      "confidence": 0.75,
+      "priority": 3
+    },
+    {
+      "id": "SALUDO",
+      "name": "Saludos",
+      "description": "Intención para saludar o iniciar conversación",
+      "patterns": [
+        "hola",
+        "buenos días",
+        "buenas tardes",
+        "buenas noches",
+        "saludos",
+        "qué tal",
+        "cómo estás",
+        "hey",
+        "hi",
+        "hello"
+      ],
+      "parameters": {},
+      "confidence": 0.95,
+      "priority": 5
+    },
+    {
+      "id": "DESPEDIDA",
+      "name": "Despedidas",
+      "description": "Intención para despedirse",
+      "patterns": [
+        "adiós",
+        "hasta luego",
+        "nos vemos",
+        "chao",
+        "bye",
+        "goodbye",
+        "hasta la vista",
+        "que tengas un buen día",
+        "hasta pronto",
+        "cuídate"
+      ],
+      "parameters": {},
+      "confidence": 0.95,
+      "priority": 5
+    },
+    {
+      "id": "AYUDA",
+      "name": "Solicitud de ayuda",
+      "description": "Intención para solicitar ayuda o soporte",
+      "patterns": [
+        "ayuda",
+        "necesito ayuda",
+        "soporte",
+        "asistencia",
+        "puedes ayudarme",
+        "no entiendo",
+        "tengo un problema",
+        "cómo funciona",
+        "qué puedo hacer",
+        "guía"
+      ],
+      "parameters": {
+        "problema": {
+          "type": "string",
+          "required": false,
+          "description": "Descripción del problema o consulta"
+        }
+      },
+      "confidence": 0.8,
+      "priority": 2
+    },
+    {
+      "id": "RESERVA",
+      "name": "Reserva de servicios",
+      "description": "Intención para reservar servicios o citas",
+      "patterns": [
+        "reservar {servicio}",
+        "agendar {servicio}",
+        "cita para {servicio}",
+        "programar {servicio}",
+        "hacer cita de {servicio}",
+        "quiero reservar {servicio}",
+        "necesito cita para {servicio}",
+        "agenda {servicio}",
+        "reserva {servicio}",
+        "cita {servicio}"
+      ],
+      "parameters": {
+        "servicio": {
+          "type": "string",
+          "required": true,
+          "description": "Servicio a reservar"
+        },
+        "fecha": {
+          "type": "date",
+          "required": false,
+          "description": "Fecha de la reserva"
+        },
+        "hora": {
+          "type": "string",
+          "required": false,
+          "description": "Hora de la reserva"
+        }
+      },
+      "confidence": 0.85,
+      "priority": 2
+    },
+    {
+      "id": "OPINION",
+      "name": "Opiniones y reseñas",
+      "description": "Intención para consultar o dar opiniones",
+      "patterns": [
+        "opinión de {producto}",
+        "reseña de {producto}",
+        "qué opinan de {producto}",
+        "comentarios sobre {producto}",
+        "valoración de {producto}",
+        "reviews de {producto}",
+        "experiencias con {producto}",
+        "qué tal es {producto}",
+        "opiniones sobre {producto}",
+        "feedback de {producto}"
+      ],
+      "parameters": {
+        "producto": {
+          "type": "string",
+          "required": true,
+          "description": "Producto sobre el cual consultar opiniones"
+        }
+      },
+      "confidence": 0.8,
+      "priority": 3
+    },
+    {
+      "id": "CONTACTO",
+      "name": "Información de contacto",
+      "description": "Intención para solicitar información de contacto",
+      "patterns": [
+        "contacto",
+        "teléfono",
+        "email",
+        "correo",
+        "dirección",
+        "ubicación",
+        "dónde están",
+        "cómo contactar",
+        "información de contacto",
+        "datos de contacto"
+      ],
+      "parameters": {
+        "tipo_contacto": {
+          "type": "string",
+          "required": false,
+          "description": "Tipo de información de contacto específica"
+        }
+      },
+      "confidence": 0.9,
+      "priority": 2
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "language": "es",
+    "created": "2024-01-01T00:00:00Z",
+    "updated": "2024-01-01T00:00:00Z",
+    "total_intents": 10,
+    "description": "Configuración de intenciones para el sistema de detección"
+  }
+} 

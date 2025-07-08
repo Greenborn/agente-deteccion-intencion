@@ -1,0 +1,392 @@
+{
+  "training_data": [
+    {
+      "text": "buscar laptop gaming",
+      "intent": "BUSQUEDA",
+      "parameters": {
+        "nombre_producto": "laptop gaming"
+      },
+      "confidence": 0.95
+    },
+    {
+      "text": "encontrar smartphone",
+      "intent": "BUSQUEDA",
+      "parameters": {
+        "nombre_producto": "smartphone"
+      },
+      "confidence": 0.92
+    },
+    {
+      "text": "necesito auriculares bluetooth",
+      "intent": "BUSQUEDA",
+      "parameters": {
+        "nombre_producto": "auriculares bluetooth"
+      },
+      "confidence": 0.88
+    },
+    {
+      "text": "precio de laptop",
+      "intent": "PRECIO",
+      "parameters": {
+        "producto": "laptop"
+      },
+      "confidence": 0.94
+    },
+    {
+      "text": "cuánto cuesta el smartphone",
+      "intent": "PRECIO",
+      "parameters": {
+        "producto": "smartphone"
+      },
+      "confidence": 0.91
+    },
+    {
+      "text": "valor de auriculares",
+      "intent": "PRECIO",
+      "parameters": {
+        "producto": "auriculares"
+      },
+      "confidence": 0.89
+    },
+    {
+      "text": "comprar laptop",
+      "intent": "COMPRA",
+      "parameters": {
+        "producto": "laptop"
+      },
+      "confidence": 0.96
+    },
+    {
+      "text": "quiero comprar smartphone",
+      "intent": "COMPRA",
+      "parameters": {
+        "producto": "smartphone"
+      },
+      "confidence": 0.93
+    },
+    {
+      "text": "ordenar 2 auriculares",
+      "intent": "COMPRA",
+      "parameters": {
+        "producto": "auriculares",
+        "cantidad": 2
+      },
+      "confidence": 0.90
+    },
+    {
+      "text": "información sobre laptops",
+      "intent": "INFORMACION",
+      "parameters": {
+        "tema": "laptops"
+      },
+      "confidence": 0.87
+    },
+    {
+      "text": "qué es un smartphone",
+      "intent": "INFORMACION",
+      "parameters": {
+        "tema": "smartphone"
+      },
+      "confidence": 0.85
+    },
+    {
+      "text": "detalles de auriculares",
+      "intent": "INFORMACION",
+      "parameters": {
+        "tema": "auriculares"
+      },
+      "confidence": 0.83
+    },
+    {
+      "text": "hola",
+      "intent": "SALUDO",
+      "parameters": {},
+      "confidence": 0.98
+    },
+    {
+      "text": "buenos días",
+      "intent": "SALUDO",
+      "parameters": {},
+      "confidence": 0.97
+    },
+    {
+      "text": "qué tal",
+      "intent": "SALUDO",
+      "parameters": {},
+      "confidence": 0.95
+    },
+    {
+      "text": "adiós",
+      "intent": "DESPEDIDA",
+      "parameters": {},
+      "confidence": 0.98
+    },
+    {
+      "text": "hasta luego",
+      "intent": "DESPEDIDA",
+      "parameters": {},
+      "confidence": 0.97
+    },
+    {
+      "text": "nos vemos",
+      "intent": "DESPEDIDA",
+      "parameters": {},
+      "confidence": 0.96
+    },
+    {
+      "text": "ayuda",
+      "intent": "AYUDA",
+      "parameters": {},
+      "confidence": 0.94
+    },
+    {
+      "text": "necesito ayuda",
+      "intent": "AYUDA",
+      "parameters": {},
+      "confidence": 0.92
+    },
+    {
+      "text": "soporte técnico",
+      "intent": "AYUDA",
+      "parameters": {
+        "problema": "técnico"
+      },
+      "confidence": 0.89
+    },
+    {
+      "text": "reservar cita",
+      "intent": "RESERVA",
+      "parameters": {
+        "servicio": "cita"
+      },
+      "confidence": 0.91
+    },
+    {
+      "text": "agendar consulta",
+      "intent": "RESERVA",
+      "parameters": {
+        "servicio": "consulta"
+      },
+      "confidence": 0.88
+    },
+    {
+      "text": "cita para mañana",
+      "intent": "RESERVA",
+      "parameters": {
+        "servicio": "cita",
+        "fecha": "mañana"
+      },
+      "confidence": 0.86
+    },
+    {
+      "text": "opinión de laptop",
+      "intent": "OPINION",
+      "parameters": {
+        "producto": "laptop"
+      },
+      "confidence": 0.90
+    },
+    {
+      "text": "reseña de smartphone",
+      "intent": "OPINION",
+      "parameters": {
+        "producto": "smartphone"
+      },
+      "confidence": 0.88
+    },
+    {
+      "text": "qué opinan de auriculares",
+      "intent": "OPINION",
+      "parameters": {
+        "producto": "auriculares"
+      },
+      "confidence": 0.85
+    },
+    {
+      "text": "contacto",
+      "intent": "CONTACTO",
+      "parameters": {},
+      "confidence": 0.95
+    },
+    {
+      "text": "teléfono",
+      "intent": "CONTACTO",
+      "parameters": {
+        "tipo_contacto": "teléfono"
+      },
+      "confidence": 0.93
+    },
+    {
+      "text": "email",
+      "intent": "CONTACTO",
+      "parameters": {
+        "tipo_contacto": "email"
+      },
+      "confidence": 0.92
+    },
+    {
+      "text": "dirección",
+      "intent": "CONTACTO",
+      "parameters": {
+        "tipo_contacto": "dirección"
+      },
+      "confidence": 0.91
+    }
+  ],
+  "validation_data": [
+    {
+      "text": "buscar monitor 4k",
+      "intent": "BUSQUEDA",
+      "parameters": {
+        "nombre_producto": "monitor 4k"
+      }
+    },
+    {
+      "text": "precio de teclado mecánico",
+      "intent": "PRECIO",
+      "parameters": {
+        "producto": "teclado mecánico"
+      }
+    },
+    {
+      "text": "comprar mouse gaming",
+      "intent": "COMPRA",
+      "parameters": {
+        "producto": "mouse gaming"
+      }
+    },
+    {
+      "text": "información sobre tablets",
+      "intent": "INFORMACION",
+      "parameters": {
+        "tema": "tablets"
+      }
+    },
+    {
+      "text": "buenas tardes",
+      "intent": "SALUDO",
+      "parameters": {}
+    },
+    {
+      "text": "chao",
+      "intent": "DESPEDIDA",
+      "parameters": {}
+    },
+    {
+      "text": "asistencia",
+      "intent": "AYUDA",
+      "parameters": {}
+    },
+    {
+      "text": "programar mantenimiento",
+      "intent": "RESERVA",
+      "parameters": {
+        "servicio": "mantenimiento"
+      }
+    },
+    {
+      "text": "valoración de monitor",
+      "intent": "OPINION",
+      "parameters": {
+        "producto": "monitor"
+      }
+    },
+    {
+      "text": "ubicación",
+      "intent": "CONTACTO",
+      "parameters": {
+        "tipo_contacto": "ubicación"
+      }
+    }
+  ],
+  "test_data": [
+    {
+      "text": "buscar webcam hd",
+      "intent": "BUSQUEDA",
+      "parameters": {
+        "nombre_producto": "webcam hd"
+      }
+    },
+    {
+      "text": "cuánto vale micrófono",
+      "intent": "PRECIO",
+      "parameters": {
+        "producto": "micrófono"
+      }
+    },
+    {
+      "text": "pedir 3 teclados",
+      "intent": "COMPRA",
+      "parameters": {
+        "producto": "teclados",
+        "cantidad": 3
+      }
+    },
+    {
+      "text": "explicar qué es un router",
+      "intent": "INFORMACION",
+      "parameters": {
+        "tema": "router"
+      }
+    },
+    {
+      "text": "hey",
+      "intent": "SALUDO",
+      "parameters": {}
+    },
+    {
+      "text": "goodbye",
+      "intent": "DESPEDIDA",
+      "parameters": {}
+    },
+    {
+      "text": "tengo un problema",
+      "intent": "AYUDA",
+      "parameters": {
+        "problema": "problema"
+      }
+    },
+    {
+      "text": "hacer cita de reparación",
+      "intent": "RESERVA",
+      "parameters": {
+        "servicio": "reparación"
+      }
+    },
+    {
+      "text": "reviews de webcam",
+      "intent": "OPINION",
+      "parameters": {
+        "producto": "webcam"
+      }
+    },
+    {
+      "text": "cómo contactar",
+      "intent": "CONTACTO",
+      "parameters": {}
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "language": "es",
+    "created": "2024-01-01T00:00:00Z",
+    "updated": "2024-01-01T00:00:00Z",
+    "total_examples": 50,
+    "training_examples": 30,
+    "validation_examples": 10,
+    "test_examples": 10,
+    "intents_covered": [
+      "BUSQUEDA",
+      "PRECIO", 
+      "COMPRA",
+      "INFORMACION",
+      "SALUDO",
+      "DESPEDIDA",
+      "AYUDA",
+      "RESERVA",
+      "OPINION",
+      "CONTACTO"
+    ],
+    "description": "Datos de entrenamiento para el modelo de detección de intenciones"
+  }
+} 

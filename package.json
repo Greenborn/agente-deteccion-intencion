@@ -1,0 +1,49 @@
+{
+  "name": "agente-deteccion-intencion",
+  "version": "1.0.0",
+  "description": "Microservicio Node.js para detección de intenciones usando BERT",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "keywords": [
+    "bert",
+    "intent-detection",
+    "nlp",
+    "microservice",
+    "nodejs"
+  ],
+  "author": "Greenborn",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "@tensorflow/tfjs-node": "^4.15.0",
+    "@huggingface/inference": "^2.6.4",
+    "natural": "^6.10.4",
+    "joi": "^17.11.0",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.55.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
