@@ -14,11 +14,13 @@ const intentSchema = Joi.object({
       type: Joi.string().valid('string', 'number', 'boolean', 'date').required(),
       required: Joi.boolean().default(false),
       description: Joi.string().optional(),
-      validation: Joi.object().optional()
+      validation: Joi.object().optional(),
+      default: Joi.any().optional() // Permitir default en parámetros
     })
   ).default({}).description('Parámetros que se pueden extraer de esta intención'),
   confidence: Joi.number().min(0).max(1).default(0.8).description('Umbral de confianza mínimo'),
-  priority: Joi.number().integer().min(1).default(1).description('Prioridad de la intención (menor = mayor prioridad)')
+  priority: Joi.number().integer().min(1).default(1).description('Prioridad de la intención (menor = mayor prioridad)'),
+  synonyms: Joi.object().optional() // Permitir synonyms a nivel de intención
 });
 
 /**
@@ -77,11 +79,15 @@ class Intent {
       const match = normalizedText.match(patternRegex);
       
       if (match) {
-        // Extraer parámetros del patrón
+        // Extraer parámetros del texto original usando las posiciones encontradas
         const paramNames = this.getParameterNames(pattern);
         paramNames.forEach((paramName, index) => {
           if (match[index + 1]) {
-            params[paramName] = match[index + 1].trim();
+            // Usar el texto original para extraer el valor exacto
+            const originalMatch = text.match(patternRegex);
+            if (originalMatch && originalMatch[index + 1]) {
+              params[paramName] = originalMatch[index + 1].trim();
+            }
           }
         });
         break;
@@ -97,11 +103,27 @@ class Intent {
    * @returns {RegExp} - Expresión regular
    */
   createPatternRegex(pattern) {
-    const regexPattern = pattern
-      .replace(/\{[^}]+\}/g, '([^\\s]+)') // Reemplaza {param} con grupo de captura
-      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapa caracteres especiales
-    
-    return new RegExp(regexPattern, 'i');
+    // Divide el patrón en partes: texto y parámetros
+    const parts = pattern.split(/(\{[^}]+\})/g);
+    let regexPattern = '';
+    let paramCount = 0;
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      if (/^\{[^}]+\}$/.test(part)) {
+        paramCount++;
+        // Si es el último parámetro, captura hasta el final
+        if (i === parts.length - 1) {
+          regexPattern += '(.+)$';
+        } else {
+          // Captura hasta el siguiente literal (no codicioso)
+          regexPattern += '(.+?)';
+        }
+      } else if (part.length > 0) {
+        // Escapa el texto literal
+        regexPattern += part.replace(/([.*+?^${}()|[\]\\])/g, '\\$1').replace(/\s+/g, '\\s+');
+      }
+    }
+    return new RegExp('^' + regexPattern.trim() + '$', 'i');
   }
 
   /**

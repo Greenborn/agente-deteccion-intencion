@@ -47,8 +47,9 @@ testCases.forEach((text, index) => {
       console.log(`📊 Confianza: ${(bestMatch.confidence * 100).toFixed(1)}%`);
       console.log(`🎯 Patrón coincidente: "${bestMatch.pattern}"`);
       
-      // Extraer parámetros
-      const parameters = parameterExtractor.extract(text, bestMatch.intentId);
+      // Extraer parámetros usando el método del modelo Intent
+      const intent = intentService.getIntent(bestMatch.intentId);
+      const parameters = intent.extractParameters(text);
       
       if (Object.keys(parameters).length > 0) {
         console.log(`📝 Parámetros extraídos:`, parameters);

@@ -25,7 +25,7 @@ class ParameterExtractor {
       // Extraer cada parámetro definido en la intención
       Object.keys(parameters).forEach(paramName => {
         const paramConfig = parameters[paramName];
-        const value = this.extractParameter(text, paramName, paramConfig);
+        const value = this.extractParameter(text, paramName, paramConfig, intentId);
         
         if (value !== null) {
           extractedParams[paramName] = value;
@@ -45,7 +45,7 @@ class ParameterExtractor {
   /**
    * Extrae un parámetro específico del texto
    */
-  extractParameter(text, paramName, paramConfig) {
+  extractParameter(text, paramName, paramConfig, intentId) {
     const patterns = this.intentService.getIntentPatterns(intentId);
     
     // Buscar en patrones de la intención

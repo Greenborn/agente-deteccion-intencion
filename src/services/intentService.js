@@ -1,4 +1,5 @@
 const intentsConfig = require('../config/intents');
+const { Intent } = require('../models/intent');
 
 class IntentService {
   constructor() {
@@ -28,20 +29,15 @@ class IntentService {
    * Obtiene todas las intenciones disponibles
    */
   getAvailableIntents() {
-    return Object.keys(this.intents).map(key => ({
-      id: key,
-      name: this.intents[key].name || key,
-      description: this.intents[key].description || '',
-      patterns: this.intents[key].patterns || [],
-      parameters: this.intents[key].parameters || {}
-    }));
+    return Object.keys(this.intents).map(key => new Intent({ id: key, ...this.intents[key] }));
   }
 
   /**
    * Obtiene una intención específica por ID
    */
   getIntent(intentId) {
-    return this.intents[intentId] || null;
+    const intent = this.intents[intentId];
+    return intent ? new Intent({ id: intentId, ...intent }) : null;
   }
 
   /**
