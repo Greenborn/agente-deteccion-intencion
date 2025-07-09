@@ -1,7 +1,7 @@
 {
   "name": "agente-deteccion-intencion",
-  "version": "2.0.0",
-  "description": "Microservicio Node.js para detección de intenciones usando BERT y Pattern Matching",
+  "version": "2.1.0",
+  "description": "Microservicio Node.js para detección de intenciones usando sistema híbrido con BERT local y Pattern Matching",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
