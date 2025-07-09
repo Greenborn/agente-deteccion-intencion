@@ -1,14 +1,18 @@
 {
   "name": "agente-deteccion-intencion",
-  "version": "1.0.0",
-  "description": "Microservicio Node.js para detección de intenciones usando BERT",
+  "version": "2.0.0",
+  "description": "Microservicio Node.js para detección de intenciones usando BERT y Pattern Matching",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "start:grpc": "node src/grpc-server.js",
+    "dev:grpc": "nodemon src/grpc-server.js",
     "test": "jest",
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
+    "test:grpc": "node test-grpc.js",
+    "test:hybrid": "node test-hybrid.js",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix"
   },
@@ -17,11 +21,16 @@
     "intent-detection",
     "nlp",
     "microservice",
-    "nodejs"
+    "nodejs",
+    "grpc",
+    "pattern-matching",
+    "hybrid"
   ],
   "author": "Greenborn",
   "license": "MIT",
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.14",
+    "@grpc/proto-loader": "^0.7.10",
     "@huggingface/inference": "^2.6.4",
     "@tensorflow/tfjs-node": "^4.15.0",
     "axios": "^1.10.0",

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package intent;
+
+// Servicio de detección de intenciones
+service IntentDetectionService {
+  // Detecta intención y extrae parámetros
+  rpc DetectIntent(IntentRequest) returns (IntentResponse);
+  
+  // Obtiene todas las intenciones disponibles
+  rpc GetIntents(Empty) returns (IntentsList);
+  
+  // Health check del servicio
+  rpc HealthCheck(Empty) returns (HealthResponse);
+}
+
+// Request para detectar intención
+message IntentRequest {
+  string text = 1;
+  string request_id = 2;  // ID opcional para tracking
+}
+
+// Response con resultado de detección
+message IntentResponse {
+  string intent = 1;                    // ID de la intención o vacío
+  double confidence = 2;                // Nivel de confianza (0-1)
+  string pattern = 3;                   // Patrón que coincidió
+  map<string, string> parameters = 4;   // Parámetros extraídos
+  string original_text = 5;             // Texto original
+  bool success = 6;                     // Si la operación fue exitosa
+  string error_message = 7;             // Mensaje de error si success=false
+}
+
+// Lista de intenciones disponibles
+message IntentsList {
+  repeated IntentDefinition intents = 1;
+  bool success = 2;
+  string error_message = 3;
+}
+
+// Definición de una intención
+message IntentDefinition {
+  string id = 1;
+  string name = 2;
+  repeated string patterns = 3;
+  map<string, ParameterDefinition> parameters = 4;
+}
+
+// Definición de un parámetro
+message ParameterDefinition {
+  string type = 1;
+  bool required = 2;
+  string description = 3;
+}
+
+// Health check response
+message HealthResponse {
+  string status = 1;
+  string timestamp = 2;
+  string service_name = 3;
+  string version = 4;
+}
+
+// Mensaje vacío para requests sin parámetros
+message Empty {} 
