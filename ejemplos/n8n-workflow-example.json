@@ -1,0 +1,298 @@
+{
+  "name": "Intent Detection Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "detect-intent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "intent-detection"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/api/n8n/detect-intent",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "method",
+              "value": "hybrid"
+            },
+            {
+              "name": "context",
+              "value": "={{ { userId: $json.userId, sessionId: $json.sessionId } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "http-request",
+      "name": "Detect Intent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "intent-compra",
+                    "leftValue": "={{ $json.data.intent }}",
+                    "rightValue": "COMPRA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "output": 0
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "intent-busqueda",
+                    "leftValue": "={{ $json.data.intent }}",
+                    "rightValue": "BUSQUEDA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "output": 1
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "intent-ayuda",
+                    "leftValue": "={{ $json.data.intent }}",
+                    "rightValue": "AYUDA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "output": 2
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "switch-intent",
+      "name": "Switch by Intent",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar intención de COMPRA\nconst intent = $json.data.intent;\nconst confidence = $json.data.confidence;\nconst parameters = $json.data.parameters;\n\n// Validar confianza\nif (confidence < 0.7) {\n  return {\n    action: 'ask_clarification',\n    message: 'No estoy seguro de tu intención. ¿Podrías ser más específico?',\n    originalText: $json.data.originalText,\n    confidence: confidence\n  };\n}\n\n// Procesar compra\nconst product = parameters.nombre_producto || 'producto';\n\nreturn {\n  action: 'process_purchase',\n  product: product,\n  confidence: confidence,\n  parameters: parameters,\n  response: `Entiendo que quieres comprar: ${product}. Te ayudo con el proceso de compra.`,\n  nextStep: 'show_payment_options'\n};"
+      },
+      "id": "process-compra",
+      "name": "Process Purchase",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar intención de BÚSQUEDA\nconst intent = $json.data.intent;\nconst confidence = $json.data.confidence;\nconst parameters = $json.data.parameters;\n\n// Validar confianza\nif (confidence < 0.7) {\n  return {\n    action: 'ask_clarification',\n    message: 'No estoy seguro de qué quieres buscar. ¿Podrías ser más específico?',\n    originalText: $json.data.originalText,\n    confidence: confidence\n  };\n}\n\n// Procesar búsqueda\nconst query = parameters.nombre_producto || 'productos';\n\nreturn {\n  action: 'search_products',\n  query: query,\n  confidence: confidence,\n  parameters: parameters,\n  response: `Buscando: ${query}. Te muestro los resultados disponibles.`,\n  nextStep: 'show_search_results'\n};"
+      },
+      "id": "process-busqueda",
+      "name": "Process Search",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar intención de AYUDA\nconst intent = $json.data.intent;\nconst confidence = $json.data.confidence;\nconst parameters = $json.data.parameters;\n\nreturn {\n  action: 'show_help',\n  confidence: confidence,\n  parameters: parameters,\n  response: 'Te ayudo con información sobre nuestros servicios. ¿En qué puedo ayudarte específicamente?',\n  helpTopics: [\n    'Cómo comprar',\n    'Cómo buscar productos',\n    'Políticas de devolución',\n    'Contacto con soporte'\n  ],\n  nextStep: 'show_help_menu'\n};"
+      },
+      "id": "process-ayuda",
+      "name": "Process Help",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Respuesta por defecto para intenciones no reconocidas\nconst intent = $json.data.intent;\nconst confidence = $json.data.confidence;\nconst originalText = $json.data.originalText;\n\nreturn {\n  action: 'default_response',\n  intent: intent,\n  confidence: confidence,\n  originalText: originalText,\n  response: 'No estoy seguro de cómo ayudarte. ¿Podrías reformular tu solicitud?',\n  suggestions: [\n    '¿Quieres comprar algo?',\n    '¿Necesitas buscar un producto?',\n    '¿Requieres ayuda con algo específico?'\n  ],\n  nextStep: 'ask_for_clarification'\n};"
+      },
+      "id": "default-response",
+      "name": "Default Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Detect Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Intent": {
+      "main": [
+        [
+          {
+            "node": "Switch by Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch by Intent": {
+      "main": [
+        [
+          {
+            "node": "Process Purchase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Process Search",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Process Help",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Purchase": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Search": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Help": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Response": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "id": "1",
+  "tags": [
+    {
+      "createdAt": "2024-07-08T20:30:00.000Z",
+      "updatedAt": "2024-07-08T20:30:00.000Z",
+      "id": "intent-detection",
+      "name": "intent-detection"
+    }
+  ]
+} 

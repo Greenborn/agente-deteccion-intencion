@@ -273,6 +273,134 @@ app.get('/api/bert-status', async (req, res) => {
   }
 });
 
+// Endpoint específico para n8n
+app.post('/api/n8n/detect-intent', async (req, res) => {
+  try {
+    const { text, method = 'hybrid', context = {} } = req.body;
+    
+    if (!text || typeof text !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'El campo "text" es requerido y debe ser una cadena de texto'
+      });
+    }
+
+    // Detectar intención
+    const result = await hybridService.detectIntent(text, method);
+    
+    // Formato específico para n8n
+    const n8nResponse = {
+      success: true,
+      data: {
+        // Información básica
+        intent: result.intent,
+        confidence: result.confidence,
+        originalText: result.originalText,
+        method: result.method,
+        
+        // Información para n8n
+        hasIntent: result.intent !== null,
+        isHighConfidence: result.confidence > 0.8,
+        
+        // Parámetros extraídos
+        parameters: result.parameters || {},
+        parameterCount: Object.keys(result.parameters || {}).length,
+        
+        // Información del patrón
+        pattern: result.pattern || '',
+        hasPattern: !!result.pattern,
+        
+        // Información híbrida
+        hybridDecision: result.hybridDecision || '',
+        bertConfidence: result.bertConfidence || 0,
+        patternConfidence: result.patternConfidence || 0,
+        
+        // Contexto adicional
+        context: context,
+        timestamp: new Date().toISOString(),
+        
+        // Flags para n8n
+        shouldRespond: result.intent !== null && result.confidence > 0.5,
+        intentType: result.intent ? result.intent.toLowerCase() : 'none',
+        
+        // Información de procesamiento
+        processingTime: Date.now() - (req.startTime || Date.now()),
+        serviceVersion: '2.1.0'
+      }
+    };
+
+    res.json(n8nResponse);
+
+  } catch (error) {
+    console.error('Error en endpoint n8n:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Endpoint para webhook de n8n (formato simplificado)
+app.post('/api/n8n/webhook', async (req, res) => {
+  try {
+    const { text, method = 'hybrid' } = req.body;
+    
+    if (!text) {
+      return res.status(400).json({
+        error: 'Campo "text" requerido'
+      });
+    }
+
+    const result = await hybridService.detectIntent(text, method);
+    
+    // Formato webhook simple para n8n
+    res.json({
+      intent: result.intent || 'none',
+      confidence: result.confidence,
+      parameters: result.parameters || {},
+      pattern: result.pattern || '',
+      method: result.method,
+      success: result.intent !== null
+    });
+
+  } catch (error) {
+    console.error('Error en webhook n8n:', error);
+    res.status(500).json({
+      error: 'Error procesando solicitud',
+      success: false
+    });
+  }
+});
+
+// Endpoint para obtener información del servicio (para n8n)
+app.get('/api/n8n/info', (req, res) => {
+  res.json({
+    service: 'Agente de Detección de Intenciones',
+    version: '2.1.0',
+    status: 'active',
+    endpoints: {
+      detect: '/api/n8n/detect-intent',
+      webhook: '/api/n8n/webhook',
+      compare: '/api/compare-methods',
+      train: '/api/train-bert',
+      status: '/api/bert-status'
+    },
+    capabilities: {
+      intentDetection: true,
+      parameterExtraction: true,
+      hybridMethod: true,
+      bertLocal: true,
+      patternMatching: true,
+      training: true
+    },
+    supportedIntents: ['BUSQUEDA', 'COMPRA', 'VENTA', 'AYUDA', 'SALUDO', 'DESPEDIDA'],
+    defaultMethod: 'hybrid',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Endpoint de health check
 app.get('/health', (req, res) => {
   res.json({
